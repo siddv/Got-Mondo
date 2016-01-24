@@ -1,0 +1,48 @@
+.transactions {
+
+  float: left;
+  width: 100%;
+  img {
+    width: 32px;
+    height: 32px;
+  }
+  .icon{
+    font-size: 32px;
+    line-height: 32px;
+  }
+  td,th{
+    vertical-align: middle !important;
+  }
+
+  th {
+    background-color: #dddddd;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+.balance {
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  line-height: 96px;
+  float: left;
+  width: 50%;
+
+  .currency {
+    background-color: #eee;
+    font-size: 28px;
+    margin: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    
+    &.positive {
+      color: #333333;
+    }
+
+    .pounds {
+      font-size: 42px;
+    }
+  }
+}

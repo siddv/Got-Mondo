@@ -1,0 +1,38 @@
+<div class="wrapper">
+    <div class="balances">
+        <article class="balance">
+            <currency money="mondo.balance">
+            </currency>
+        </article>
+        <article class="balance">
+            <currency money="mondo.transactions[0].spent"></currency>
+        </article>
+    </div>
+    <section class="transactions">
+        <table class="table">
+            <tbody ng-repeat="d in mondo.transactions">
+                <tr>
+                    <th colspan="2">
+                        {{d.date}}
+                    </th>
+                    <th>
+                        <currency money="d.spent" has-plus="true"></currency>
+                    </th>
+                </tr>
+
+                <tr ng-repeat="t in d.transactions">
+                    <td class="icon">
+                        <img ng-if="t.merchant.logo" ng-src="{{t.merchant.logo}}">
+                        <span ng-if="!t.merchant.logo">{{t.merchant.emoji}}</span>
+                    </td>
+                    <td>
+                        {{t.merchant.name}}
+                    </td>
+                    <td>
+                        <currency money="t.amount" has-plus="true"></currency>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
