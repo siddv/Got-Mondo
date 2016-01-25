@@ -1,17 +1,26 @@
 <div class="wrapper">
     <div class="balances">
         <article class="balance">
-            <currency money="mondo.balance">
-            </currency>
+            <div>
+                <h4 class="word">
+                    Balance
+                </h4>
+                <currency money="mondo.balance"></currency>
+            </div>
         </article>
         <article class="balance">
-            <currency money="mondo.transactions[0].spent"></currency>
+            <div>
+                <h4 class="word">
+                    Today
+                </h4>
+                <currency money="mondo.transactions[0].spent"></currency>
+            </div>
         </article>
     </div>
     <section class="transactions">
         <table class="table">
             <tbody ng-repeat="d in mondo.transactions">
-                <tr>
+                <tr ng-click="d.show = !d.show">
                     <th colspan="2">
                         {{d.date}}
                     </th>
@@ -19,19 +28,26 @@
                         <currency money="d.spent" has-plus="true"></currency>
                     </th>
                 </tr>
-
-                <tr ng-repeat="t in d.transactions">
-                    <td class="icon">
-                        <img ng-if="t.merchant.logo" ng-src="{{t.merchant.logo}}">
-                        <span ng-if="!t.merchant.logo">{{t.merchant.emoji}}</span>
-                    </td>
-                    <td>
-                        {{t.merchant.name}}
-                    </td>
-                    <td>
-                        <currency money="t.amount" has-plus="true"></currency>
+                <tr>
+                    <td colspan="3" ng-class="d.uDate" ng-show="d.show">
+                        <table class="table" ng-class="">
+                            <tr ng-repeat="t in d.transactions">
+                                <td class="icon">
+                                    <img ng-if="t.merchant.logo" ng-src="{{t.merchant.logo}}">
+                                    <span ng-if="!t.merchant.logo">{{t.merchant.emoji}}</span>
+                                </td>
+                                <td>
+                                    {{t.merchant.name}}<br>
+                                    <span class="notes">{{t.notes}}</span>
+                                </td>
+                                <td>
+                                    <currency money="t.amount" has-plus="true"></currency>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
+
             </tbody>
         </table>
     </section>

@@ -24,6 +24,15 @@ angular.module('mondularApp')
             mondo.getBalance(token, account.id).then(function (response) {
                 $scope.mondo.balance = response.data.balance;
             });
+        }).catch(function () {
+
+            var myUrl = 'http://' + location.host;
+            var oAuthClient = 'oauthclient_000094S7qhLsD1dGgZGVhh';
+            window.location = 'https://auth.getmondo.co.uk/?client_id=' +
+                oAuthClient +
+                '&redirect_uri=' +
+                myUrl +
+                '/oauth/callback&response_type=code&state=jjHwiXGC7zSIa0sUhN0U';
         });
 
     });

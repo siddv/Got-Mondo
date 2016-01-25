@@ -9,21 +9,23 @@ angular.module('mondularApp')
         money: '=',
         hasPlus: '='
       },
-      link: function (scope, element, attrs) {
+      link: function (scope) {
 
         var run = function(){
-          var money = (scope.money/100).toFixed(2).toString().split(".");
+          var money = (scope.money/100).toFixed(2).toString().split('.');
 
           scope.pounds = money[0];
           scope.pence = money[1];
-          scope.positive = true;
+          scope.class = 'negative';
 
           if(scope.pounds.indexOf('-') > -1){
-            scope.positive = false;
             scope.pounds = scope.pounds.replace('-','');
+          }else if(scope.money == 0) {
+            scope.class = 'neutral';
           }else{
+            scope.class = 'positive';
             if(scope.hasPlus){
-              scope.plus = '+'
+              scope.plus = '+';
             }
           }
         };
