@@ -4,11 +4,8 @@ var _ = require('lodash');
 var https = require('https');
 var http = require('http');
 var querystring = require('querystring');
-//var credentials = require('./credentials.js');
-var credentials = {
-    client: 'oauthclient_000094S7qhLsD1dGgZGVhh',
-    secret: 'V+laHjZX8SgQ5D9eZB879tff3Rvr2rJrF0KMAAsNOl0PoK83qXHS2UOuZxB9YZvnTLGUxBREuIN0bw5HO4Gt'
-};
+var Cookies = require( "cookies" );
+var credentials = require('./credentials.js');
 
 
 exports.index = function (req, res) {
