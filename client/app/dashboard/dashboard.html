@@ -28,11 +28,11 @@
                         <currency money="w.spent"></currency>
                     </th>
                 </tr>
-                <tr>
-                    <td colspan="3">
-                        <table class="table" ng-show="w.show">
+                <tr ng-show="w.show">
+                    <td class="nesty" colspan="3">
+                        <table class="table">
                             <tbody ng-repeat="d in w.days">
-                                <tr ng-click="d.show = !d.show">
+                                <tr class="day-header" ng-click="d.show = !d.show">
                                     <th colspan="2">
                                         {{d.date}}
                                     </th>
@@ -40,8 +40,8 @@
                                         <currency money="d.spent" has-plus="true"></currency>
                                     </th>
                                 </tr>
-                                <tr>
-                                    <td colspan="3" ng-class="d.uDate" ng-show="d.show">
+                                <tr ng-show="d.show">
+                                    <td colspan="3" ng-class="d.uDate">
                                         <table class="table">
                                             <tr ng-repeat="t in d.transactions">
                                                 <td class="icon">

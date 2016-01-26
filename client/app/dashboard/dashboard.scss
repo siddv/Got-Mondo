@@ -15,9 +15,15 @@
   }
 
   th {
-    background-color: #dddddd;
+    background-color: #434343;
+    color: #fff;
     padding-top: 12px;
     padding-bottom: 12px;
+  }
+
+  .day-header th {
+    color: #333;
+    background-color: #eee;
   }
 
   .notes {
@@ -27,6 +33,11 @@
   
   table{
     margin: 0;
+  }
+
+  .nesty{
+    padding-top: 0;
+    padding-right: 0;
   }
 }
 
