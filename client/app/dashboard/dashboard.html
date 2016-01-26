@@ -19,35 +19,50 @@
     </div>
     <section class="transactions">
         <table class="table">
-            <tbody ng-repeat="d in mondo.transactions">
-                <tr ng-click="d.show = !d.show">
+            <tbody colspan="3" ng-repeat="w in mondo.transactions">
+                <tr ng-click="w.show = !w.show">
                     <th colspan="2">
-                        {{d.date}}
+                       {{w.week}}
                     </th>
                     <th>
-                        <currency money="d.spent" has-plus="true"></currency>
+                        <currency money="w.spent"></currency>
                     </th>
                 </tr>
                 <tr>
-                    <td colspan="3" ng-class="d.uDate" ng-show="d.show">
-                        <table class="table" ng-class="">
-                            <tr ng-repeat="t in d.transactions">
-                                <td class="icon">
-                                    <img ng-if="t.merchant.logo" ng-src="{{t.merchant.logo}}">
-                                    <span ng-if="!t.merchant.logo">{{t.merchant.emoji}}</span>
-                                </td>
-                                <td>
-                                    {{t.merchant.name}}<br>
-                                    <span class="notes">{{t.notes}}</span>
-                                </td>
-                                <td>
-                                    <currency money="t.amount" has-plus="true"></currency>
-                                </td>
-                            </tr>
+                    <td colspan="3">
+                        <table class="table" ng-show="w.show">
+                            <tbody ng-repeat="d in w.days">
+                                <tr ng-click="d.show = !d.show">
+                                    <th colspan="2">
+                                        {{d.date}}
+                                    </th>
+                                    <th>
+                                        <currency money="d.spent" has-plus="true"></currency>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" ng-class="d.uDate" ng-show="d.show">
+                                        <table class="table">
+                                            <tr ng-repeat="t in d.transactions">
+                                                <td class="icon">
+                                                    <img ng-if="t.merchant.logo" ng-src="{{t.merchant.logo}}">
+                                                    <span ng-if="!t.merchant.logo">{{t.merchant.emoji}}</span>
+                                                </td>
+                                                <td>
+                                                    {{t.merchant.name}}<br>
+                                                    <span class="notes">{{t.notes}}</span>
+                                                </td>
+                                                <td>
+                                                    <currency money="t.amount" has-plus="true"></currency>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </td>
                 </tr>
-
             </tbody>
         </table>
     </section>

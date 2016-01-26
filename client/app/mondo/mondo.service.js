@@ -47,22 +47,27 @@ angular.module('mondularApp')
 
         this.transform = function (transactions) {
 
-            console.log(window.moment());
-
             transactions = $filter('orderBy')(transactions, 'created', true);
 
             var transformedArray = [];
             var tempArray = [];
+            var tempWeek = [];
             var transformedWeek = [];
             var transformedDay = [];
             var lastDay = 'pants';
             var lastWeek = 'pants';
             var length = transactions.length - 1;
+            var prevDay = {};
+            var currentWeek = moment().format('Wo');
+            var previousWeek = moment().subtract(1, 'weeks').format('Wo');
+            var today = moment().format('ddd Do MMM YYYY');
+            var yesterday = moment().subtract(1, 'days').format('ddd Do MMM YYYY');
+
 
             angular.forEach(transactions, function (transaction, index) {
 
                 var date = moment(transaction.created);
-                var week = date.format('W');
+                var week = date.format('Wo');
                 var day = date.format('LL');
 
                 if (lastDay === 'pants') {
@@ -71,6 +76,7 @@ angular.module('mondularApp')
 
                 if (lastWeek === 'pants') {
                     lastWeek = week;
+                    console.log('initial week', week);
                 }
 
                 /*jshint camelcase: false */
@@ -84,62 +90,94 @@ angular.module('mondularApp')
                     transaction.merchant.logo = 'http://altcoindb.com/images/mariobroscoin.png';
                 }
 
+                if (week === lastWeek) {
 
-                console.log(transaction.merchant.name, day, lastDay);
-
-                if (day === lastDay) {
-                    transformedDay.push(transaction);
+                    if (day === lastDay) {
+                        transformedDay.push(transaction);
+                        tempWeek.week = week;
+                    } else {
+                        tempWeek.push(transformedDay);
+                        lastDay = day;
+                        transformedDay = [];
+                        transformedDay.push(transaction);
+                    }
                 } else {
-                    lastDay = day;
-                    tempArray.push(transformedDay);
+
+                    tempWeek.push(prevDay);
+                    tempArray.push(tempWeek);
+                    lastWeek = week;
+                    tempWeek = [];
                     transformedDay = [];
                     transformedDay.push(transaction);
+                    lastDay = day;
                 }
 
                 if (index === length) {
-                    lastDay = day;
-                    tempArray.push(transformedDay);
-                    transformedDay = [];
+                    tempWeek.push(transformedDay);
+                    tempArray.push(tempWeek);
                 }
+
+                prevDay = transformedDay;
             });
 
-            angular.forEach(tempArray, function (day) {
-                var tempDay = {
-                    'spent': 0,
-                    'date': '',
-                    'transactions': []
+            console.log(tempArray);
+
+            angular.forEach(tempArray, function (week) {
+
+                var weekObj = {
+                    'days': [],
+                    'spent': 0
                 };
 
-                angular.forEach(day, function (transaction) {
+                angular.forEach(week, function (day) {
 
-                    var day = moment(transaction.created).format('ddd Do MMM YYYY');
-                    var today = moment().format('ddd Do MMM YYYY');
-                    var yesterday = moment().subtract(1, 'days').format('ddd Do MMM YYYY');
+                    var tempDay = {
+                        'spent': 0,
+                        'date': '',
+                        'transactions': []
+                    };
 
-                    tempDay.uDate = day;
+                    angular.forEach(day, function (transaction) {
 
-                    if (day == today) {
-                        tempDay.date = "Today";
-                        tempDay.show = true;
-                    } else if (day==yesterday) {
-                        tempDay.date = "Yesterday";
-                        tempDay.show = false;
-                    } else {
-                        tempDay.date = moment(transaction.created).format('ddd Do');
-                        tempDay.show = false;
-                    }
+                        var day = moment(transaction.created).format('ddd Do MMM YYYY');
 
-                    /*jshint camelcase: false */
-                    if (transaction.is_load !== true) {
-                        tempDay.spent += transaction.amount;
-                    }
+                        tempDay.uDate = day;
 
-                    tempDay.transactions.push(transaction);
+                        if (day == today) {
+                            tempDay.date = "Today";
+                            tempDay.show = true;
+                        } else if (day == yesterday) {
+                            tempDay.date = "Yesterday";
+                            tempDay.show = false;
+                        } else {
+                            tempDay.date = moment(transaction.created).format('ddd Do');
+                            tempDay.show = false;
+                        }
+
+                        /*jshint camelcase: false */
+                        if (transaction.is_load !== true) {
+                            tempDay.spent += transaction.amount;
+                        }
+
+                        tempDay.transactions.push(transaction);
+                    });
+                    weekObj.spent += tempDay.spent;
+                    weekObj.days.push(tempDay);
                 });
 
-                transformedArray.push(tempDay);
+                if (week.week == currentWeek) {
+                    weekObj.week = "This week";
+                    weekObj.show = true;
+                } else if (week.week  == previousWeek) {
+                    weekObj.week = "Last week";
+                    weekObj.show = false;
+                } else {
+                    weekObj.week = week.week + ' week';
+                    weekObj.show = false;
+                }
+                transformedArray.push(weekObj);
+                weekObj = [];
             });
-            console.log(transformedArray);
             return transformedArray;
         };
 
